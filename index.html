@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENAI | Simulador de Triagem de Incidentes</title>
+    <link rel="icon" href="https://logopng.com.br/logos/senai-165.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <section id="start-screen" class="view active">
+        <div class="terminal-container">
+            <div class="logo-container">
+                <img src="https://logopng.com.br/logos/senai-165.png" alt="Logo SENAI"
+                    class="logo">
+            </div>
+
+            <h1>SIMULADOR DE TRIAGEM</h1>
+            <p class="subtitle">Bem-vindo ao terminal de operações de banco de dados. Autenticação necessária.</p>
+
+            <div class="intro-block">
+                <p>Neste simulador corporativo, cada grupo atuará como o DBA (Administrador de Banco de Dados)
+                    responsável por conter uma crise em sua unidade específica.</p>
+                <p><strong> PONTO VITAL DE PRIORIZAÇÃO:</strong> Questões de <span class="text-danger">Disponibilidade
+                        Crítica (Risco Vital/Recuperação)</span> vêm primeiro. Imediatamente a seguir, todas as falhas
+                    de <span class="text-danger">Segurança</span> e <span class="text-danger">Integridade dos
+                        Dados</span>.</p>
+                <p>Problemas de <span class="text-neutral">Performance</span> (lentidão) e operacionais (melhorias
+                    visuais, suporte comum) devem ficar para o final. Se um chamado de Segurança ou Integridade aguardar
+                    enquanto você resolve um problema de Performance, <strong>toda a equipe será DEMITIDA</strong>.
+                    Administre o risco com sabedoria.</p>
+            </div>
+
+            <form id="start-form">
+                <div class="input-group">
+                    <label for="group-select">>> SELECIONE A UNIDADE OPERACIONAL:</label>
+                    <select id="group-select" required>
+                        <option value="" disabled selected>-- SELECIONE SEU GRUPO --</option>
+                        <option value="1">GRUPO 1: O Hospital (Foco: Disponibilidade Crítica)</option>
+                        <option value="2">GRUPO 2: O Banco (Foco: Integridade de Valores)</option>
+                        <option value="3">GRUPO 3: O E-commerce (Foco: Segurança e Fraude)</option>
+                        <option value="4">GRUPO 4: A Transportadora (Foco: Recuperação de Desastre)</option>
+                        <option value="5">GRUPO 5: O App de Delivery (Foco: Concorrência de Dados)</option>
+                        <option value="6">GRUPO 6: A Lavanderia Industrial (Foco: Governança/Acessos)</option>
+                    </select>
+                </div>
+                <div class="group-focus-box" id="group-focus-box" style="display: none;">
+                    <strong>FOCO DE ATUAÇÃO ESTRATÉGICA:</strong>
+                    <p id="group-focus-text"></p>
+                </div>
+
+                <div class="input-group">
+                    <label for="team-names">>> INFORME OS OPERADORES (Membros do Grupo):</label>
+                    <textarea id="team-names" rows="3"
+                        placeholder="Digite o nome de todos do grupo separados por vírgula..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">INICIAR SESSÃO_</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="simulation-screen" class="view">
+        <div class="header-bar">
+            <div class="logo-mini">
+                <img src="https://logopng.com.br/logos/senai-165.png" alt="Logo SENAI" class="logo">
+            </div>
+            <div class="terminal-info">
+                <span id="display-group">UNIDADE: ---</span>
+                <span id="display-status" class="blinking">STATUS: CRÍTICO</span>
+            </div>
+            <div class="timer-box">
+                <span class="timer-label">PREJUÍZO ACUMULADO:</span>
+                <span id="loss-counter">R$ 0,00</span>
+            </div>
+        </div>
+
+        <div class="main-terminal">
+            <div class="instruction-panel">
+                <h2>>> LOG DE INCIDENTES DETECTADOS</h2>
+                <p>MÚLTIPLAS FALHAS IDENTIFICADAS. ORDENE OS INCIDENTES DO <span class="text-danger">MAIS CRÍTICO</span>
+                    AO <span class="text-neutral">MENOS CRÍTICO</span> ARRASTANDO OS ITENS ABAIXO.</p>
+                <div class="priority-guide">
+                    <div class="top-indicator">▲ MAIOR PRIORIDADE (URGENTE)</div>
+                    <div class="bottom-indicator">▼ MENOR PRIORIDADE</div>
+                </div>
+            </div>
+
+            <ul id="incident-list" class="sortable-list">
+            </ul>
+
+            <div class="action-panel">
+                <button id="btn-finish" class="btn-warning">MANDAR PARA EXECUÇÃO_ [ENTER]</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="result-screen" class="view">
+        <div class="terminal-container">
+            <div class="logo-container">
+                <img src="https://logopng.com.br/logos/senai-165.png" alt="Logo SENAI"
+                    class="logo">
+            </div>
+
+            <h1 id="result-title">[ PROCESSANDO TRIAGEM... ]</h1>
+
+            <div class="result-details">
+                <p><strong>OPERADORES:</strong> <span id="final-team-names">---</span></p>
+                <p><strong>UNIDADE:</strong> <span id="final-group">---</span></p>
+                <p><strong>PREJUÍZO FINAL MÁXIMO CONTIDO:</strong> <span id="final-loss" class="text-danger">---</span>
+                </p>
+            </div>
+
+            <div class="verdict-box" id="verdict-box">
+                <h2 id="verdict-text">AVALIANDO AÇÕES...</h2>
+                <p id="verdict-reason">---</p>
+            </div>
+
+            <div class="final-order-panel">
+                <h3>>> ORDEM DE EXECUÇÃO ENVIADA:</h3>
+                <ol id="final-order-list">
+                </ol>
+            </div>
+
+            <div class="print-actions unprintable">
+                <button id="btn-print" class="btn-primary">SALVAR RELATÓRIO (PDF) / IMPRIMIR_</button>
+                <button id="btn-restart" class="btn-secondary">NOVA SESSÃO_</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
